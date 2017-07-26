@@ -58,7 +58,7 @@ class Login extends Component{
                 <form onSubmit={this.handleLogin}>
                 <Row>
                     <Col offset='s3' s={6} className='center-align'>
-                        <h1>Log In</h1>
+                        <h2>Log In</h2>
                         {this.state.passwordError}
                     </Col>
                 </Row>

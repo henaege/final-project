@@ -11,7 +11,8 @@ class Register extends Component{
             value:'',
             registerMessage: 'Create an Account:',
             registerError: '',
-            passwordForm: <Input type="password" label="Password" s={12} />
+            passwordForm: <Input type="password" label="Password" s={12} />,
+            passwordError: ""
         }
         this.handleRegistration = this.handleRegistration.bind(this)
     }
@@ -30,17 +31,40 @@ class Register extends Component{
 
   handleRegistration(event){
       event.preventDefault()
+      
+      var firstName = event.target[0].value
+      var lastName = event.target[1].value
+      var email = event.target[2].value
+      var password = event.target[3].value
+      var confirmPassword = event.target[4].value
+      var error = false
 
-  }
+      if (password !== confirmPassword){
+          var passwordError = <h5 className="red-text">Passwords do not match!</h5>
+          error = true
+      } else {
+          console.log("register form submitted")
+            this.setState({
+                passwordError: passwordError
+            })
+            this.props.registerAction({
+                firstName: firstName,
+                lastName: lastName,
+                email: email,
+                password: password,
+                confirmPassword: confirmPassword
+            })
+        }
+    }
 
     render(){
         console.log('Hello')
         return(
             <div>
-                <form onSubmit={this.handleLogin}>
+                <form onSubmit={this.handleRegistration}>
                 <Row>
                     <Col offset='s3' s={6} className='center-align'>
-                        <h1>{this.state.registerMessage}</h1>
+                        <h2>{this.state.registerMessage}</h2>
                         {this.state.registerError}
                     </Col>
                 </Row>
@@ -50,13 +74,16 @@ class Register extends Component{
                         <Input label="First Name" s={12} />
                     </Col>
                     <Col offset='s3' s={6}>
-                        <Input type="email" label="Last Name" s={12} />
+                        <Input label="Last Name" s={12} />
                     </Col>
                     <Col offset='s3' s={6}>
                         <Input type="email" label="Email" s={12} />
                     </Col>
                     <Col offset='s3' s={6}>
                         {this.state.passwordForm}
+                    </Col>
+                    <Col offset='s3' s={6}>
+                        <Input type="password" label=" Confirm password" s={12} />
                     </Col>
                 </Row>
                 <Row>
@@ -70,4 +97,16 @@ class Register extends Component{
     }
 }
 
-export default Register
+function mapDispatchToProps(dispatch){
+    return bindActionCreators({
+        registerAction: RegisterAction
+    }, dispatch)
+}
+
+function mapStateToProps(state){
+    return {
+        registerResponse: state.registerReducer
+    }
+}
+
+export default connect(mapStateToProps, mapDispatchToProps)(Register)

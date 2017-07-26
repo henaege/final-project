@@ -20,11 +20,15 @@ router.get('/', function(req, res, next) {
 });
 
 router.post('/register', (req, res)=>{
-  const firstName = req.body.name
+  const firstName = req.body.firstName
+  const lastName = req.body.lastName
   const email = req.body.email
   const password = bcrypt.hashSync(req.body.password)
 
+  console.log(firstName)
+
   connection.query(`SELECT email FROM users`, (error, results)=>{
+    console.log(results)
     if (error) throw error
     var emailsArray = []
     for (i = 0; i < results.length; i++){
@@ -33,7 +37,19 @@ router.post('/register', (req, res)=>{
     if(emailsArray.includes(email)){
       res.json({msg: "user exists"})
     } else {
-      var insertIntoUsers = `INSERT INTO users (email, firstName, lastName, password) VALUES (?,?,?,?)`
+      // var insertIntoUsers = `INSERT INTO users (email, firstName, lastName, password) VALUES (?,?,?,?);`
+      connection.query(`INSERT INTO users (email, firstName, lastName, password) VALUES (?,?,?,?);`, [email, firstName, lastName, password], (error2, results2)=>{
+        console.log("user inserted")
+        console.log(results2)
+        if(error2){
+          res.json({msg: error2})
+        } else {
+          res.json({
+            msg: "userInserted",
+            name: name
+          })
+        }
+      })
     }
   })
 })
