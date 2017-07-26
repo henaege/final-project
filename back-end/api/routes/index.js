@@ -55,4 +55,55 @@ router.post('/register', (req, res)=>{
   })
 })
 
+router.get('/categorylist', (req, res)=>{
+  var email = req.body.email
+
+  var categoryQuery = `SELECT * FROM categories;`
+  conection.query(categoryQuery, (error, results)=>{
+    if (error) {
+      throw error
+    } else {
+      res.json({
+        categories: results
+      })
+    }
+  })
+})
+
+router.get('/grouplist', (req, res)=> {
+  var categoryName = req.body.categoryName
+
+  var categoryIdQuery = `SELECT id FROM category WHERE categoryName = categoryName;`
+  connection.query(categoryIdQuery, (error, results)=>{
+    if (error) {
+      throw error
+    } else {
+      var groupQuery = `SELECT habits FROM groups WHERE categoryID = ${results[0]};`
+      connection.query(groupQuery, (error2, results2)=>{
+        if (error){
+          throw error
+        } else {
+          res.json({
+            groupList: results2
+          })
+        }
+      })
+    }
+  })
+})
+
+router.post('/test', (req, res)=>{
+  var email = req.body.email
+  insertQuery = `INSERT INTO users (email) VALUES (email);`
+  connection.query(insertQuery, (error, results)=>{
+    if (error) {
+      throw error
+    } else {
+      res.json({
+        msg: "email success"
+      })
+    }
+  })
+})
+
 module.exports = router;
