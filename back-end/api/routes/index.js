@@ -35,7 +35,7 @@ router.post('/register', (req, res)=>{
       emailsArray.push(results[i].email)
     }
     if(emailsArray.includes(email)){
-      res.json({msg: "user exists"})
+      res.json({msg: "userExists"})
     } else {
       // var insertIntoUsers = `INSERT INTO users (email, firstName, lastName, password) VALUES (?,?,?,?);`
       connection.query(`INSERT INTO users (email, firstName, lastName, password) VALUES (?,?,?,?);`, [email, firstName, lastName, password], (error2, results2)=>{
@@ -46,7 +46,8 @@ router.post('/register', (req, res)=>{
         } else {
           res.json({
             msg: "userInserted",
-            name: name
+            email: email,
+            name: firstName
           })
         }
       })

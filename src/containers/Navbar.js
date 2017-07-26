@@ -8,7 +8,7 @@ class NavBar extends Component{
 
     render(){
         return(
-                <Navbar brand='ToDo' right fixed>
+                <Navbar brand='Habitual' right fixed>
                     <Dropdown trigger={<Button floating large flat className='transparent' waves='light' icon='menu' />}>
                         	<Link to='/tasks'><NavItem>ToDos</NavItem></Link>
 	                        <Link to='/habits'><NavItem>Habits</NavItem></Link>
